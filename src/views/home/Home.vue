@@ -3,10 +3,10 @@
     <el-col :span="8" style="margin-top: 20px">
       <el-card shadow="hover">
         <div class="user">
-          <img src="../../assets/images/user.png" alt="" />
+          <img src="../../assets/images/user-default.png" alt="" />
           <div class="user-info">
-            <p class="name">Admin</p>
-            <p class="role">超级管理员</p>
+            <p class="name">各大公司争抢的CRM系统</p>
+            <p class="role"></p>
           </div>
         </div>
         <div class="login-info">

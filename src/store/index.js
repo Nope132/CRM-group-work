@@ -66,6 +66,8 @@ export default createStore({
           menuArray.push(item)
         }
       })
+      console.log(menu)
+      console.log(menuArray)
 
       menuArray.forEach(item => {
         router.addRoute('home1', item)

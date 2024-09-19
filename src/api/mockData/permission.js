@@ -31,6 +31,20 @@ export default {
               url: 'User/User'
             },
             {
+              path: '/sales',
+              name: 'sales',
+              label: '营销管理',
+              icon: 'Memo',
+              url: 'SalesManage/SalesManage'
+            },
+            {
+              path: '/client',
+              name: 'client',
+              label: '客户管理',
+              icon: 'Avatar',
+              url: 'ClientManage/ClientManage'
+            },
+            {
               path: '/service',
               name: 'service',
               label: '服务管理',
