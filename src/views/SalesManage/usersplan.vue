@@ -1,5 +1,5 @@
 <template>
-    <div>户开发计划</div>
+    <div>客户开发计划</div>
   </template>
     
   <script>

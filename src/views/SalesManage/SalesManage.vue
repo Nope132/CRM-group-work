@@ -17,7 +17,7 @@
         :key="item.prop"
         :label="item.label"
         :prop="item.prop"
-        :width="item.width ? item.width : 125"
+        :width="item.width ? item.width : 200"
       />
       <el-table-column fixed="right" label="操作" min-width="180">
         <template #default="scope">
@@ -42,10 +42,28 @@
   <el-dialog
     v-model="dialogVisible"
     :title="action == 'add' ? '新增用户' : '编辑用户'"
-    width="35%"
+    width="60%"
     :before-close="handleClose"
   >
     <el-form :inline="true" :model="formUser" ref="userForm">
+      <el-row>
+        <el-col :span="12">
+          <el-form-item
+            label="编号"
+            prop="number"
+          >
+            <el-input v-model="formUser.number" placeholder="编号为系统自动生成" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item
+            label="机会来源"
+            prop="from"            
+          > 
+            <el-input v-model.number="formUser.from"  />
+          </el-form-item>
+        </el-col>
+      </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item
@@ -58,54 +76,101 @@
         </el-col>
         <el-col :span="12">
           <el-form-item
-            label="成功几率"
-            prop="probability"
+            label="成功几率(%)"
+            prop="probability"            
             :rules="[
-              { required: true, message: '成功几率是必填项' },
+              { required: true, message: '成功几率是必填项且必须是数字' },
               { type: 'number', message: '成功几率必须是数字' },
             ]"
           >
-            <el-input v-model.number="formUser.age" placeholder="请输入成功几率" />
+            <el-input v-model.number="formUser.probability" placeholder="请输入成功几率" />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="15">
+          <el-form-item
+            label="概要"
+            prop="summary"
+            :rules="[{ required: true, message: '概要是必填项' }]"            
+          >
+            <el-input style="width: 300px" autosize v-model="formUser.summary" placeholder="请输入概要" />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item
-            label="概要"
-            prop="sex"
-            :rules="[{ required: true, message: '性别是必选项' }]"
+            label="联系人"
+            prop="person"                       
           >
-            <el-select v-model="formUser.sex" placeholder="请选择">
-              <el-option label="男" value="0" />
-              <el-option label="女" value="1" />
-            </el-select>
+            <el-input v-model="formUser.person" placeholder="请输入联系人名称" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item
-            label="出生日期"
-            prop="birth"
-            :rules="[{ required: true, message: '出生日期是必选项' }]"
+            label="联系人电话"
+            prop="phonenumber"           
           >
+            <el-input v-model.number="formUser.phonenumber" placeholder="请输入联系人电话" />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item
+            label="机会描述"
+            prop="chance"    
+            :rules="[{ required: true, message: '机会描述是必填项' }] "      
+          >
+            <el-input style="width: 300px" autosize
+            type="textarea" v-model="formUser.chance" placeholder="请输入机会描述" />            
+          </el-form-item>
+        </el-col>    
+      </el-row>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item
+            label="创建人"
+            prop="maker"    
+            :rules="[{ required: true, message: '创建人是必填项' }] "      
+          >
+            <el-input style="width: 300px" v-model="formUser.maker" placeholder="请输入创建人" />
+          </el-form-item>
+        </el-col> 
+        <el-col :span="12">
+          <el-form-item
+            label="创建时间"
+            prop="timemaker"                
+            :rules="[{ required: true, message: '创建时间是必选项' }] "      
+          >            
             <el-date-picker
-              v-model="formUser.birth"
+              v-model="formUser.timemaker"
               type="date"
-              label="出生日期"
-              placeholder="请输入"
+              label="创建时间"
+              placeholder="请选择"
               style="width: 100%"
             />
           </el-form-item>
-        </el-col>
+        </el-col> 
       </el-row>
       <el-row>
-        <el-form-item
-          label="地址"
-          prop="addr"
-          :rules="[{ required: true, message: '地址是必填项' }]"
-        >
-          <el-input v-model="formUser.addr" placeholder="请输入地址" />
-        </el-form-item>
+        <el-col :span="12">
+          <el-form-item
+            label="指派给"
+            prop="for"                       
+          >
+            <el-input v-model="formUser.for" placeholder="请输入联系人名称" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item
+            label="指派时间"
+            prop="fortime"           
+          >
+            <el-input v-model.number="formUser.fortime" placeholder="请输入联系人电话" />
+          </el-form-item>
+        </el-col>
       </el-row>
       <el-row style="justify-content: flex-end">
         <el-form-item>
@@ -141,26 +206,33 @@ export default defineComponent({
     const list = ref([]);
     const tableLabel = reactive([
       {
+        prop: "number",
+        label: "编号",
+        width:100
+      },
+      {
         prop: "name",
-        label: "姓名",
+        label: "客户名称",
       },
       {
-        prop: "probability",
-        label: "成功几率",
+        prop: "summary",
+        label: "概要",
+        width: 150,
       },
       {
-        prop: "sexLabel",
-        label: "性别",
+        prop: "chance",
+        label: "联系人",
+        width: 150,
       },
       {
-        prop: "birth",
-        label: "出生日期",
+        prop: "chance",
+        label: "联系方式",
         width: 200,
       },
       {
-        prop: "addr",
-        label: "地址",
-        width: 320,
+        prop: "chance",
+        label: "创建时间",
+        width: 200,
       },
     ]);
     onMounted(() => {
@@ -207,10 +279,17 @@ export default defineComponent({
     // 添加用户的form数据
     const formUser = reactive({
       name: "", // 添加用户的 用户名
-      age: "",
-      sex: "",
-      birth: "",
-      addr: "",
+      number: "",
+      from: "",
+      summary: "",
+      person: "",
+      probability: "",
+      phonenumber: "",
+      chance: "",
+      maker: "",
+      timemaker: "",
+      for: "",
+      fortime:""
     });
     const timeFormat = (time) => {
       var time = new Date(time);
