@@ -324,7 +324,7 @@ export default defineComponent({
   height: 520px;
   .pager {
     position: absolute;
-    right: 0; 
+    right: 0;
     bottom: -20px;
   }
 }
