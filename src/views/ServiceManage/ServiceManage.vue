@@ -4,18 +4,27 @@
       <el-button type="danger" @click="handleAdd">+新增</el-button>
     </div>
     <div>
-      <el-form :inline="true" :model="formInline">
+      <el-form :inline="true" :model="searchForm">
         <el-row>
           <el-form-item label="客户">
-            <el-input v-model="formInline.keyword" placeholder="请输入用户名" />
+            <el-input
+              v-model="searchForm.customer"
+              placeholder="请输入客户名"
+            />
           </el-form-item>
           <el-form-item label="概要">
-            <el-input v-model="formInline.keyword" placeholder="请输入用户名" />
+            <el-input v-model="searchForm.overview" placeholder="请输入概要" />
           </el-form-item>
           <el-form-item label="服务类型">
-            <el-select v-model="formInline.keyword" placeholder="全部">
-              <el-option label="全部" value="全部" />
-              <el-option label="部分" value="beijing" />
+            <el-select
+              v-model="searchForm.serveType"
+              placeholder="全部"
+              style="width: 120px"
+            >
+              <el-option label="全部" :value="0" />
+              <el-option label="咨询" :value="1" />
+              <el-option label="建议" :value="2" />
+              <el-option label="投诉" :value="3" />
             </el-select>
           </el-form-item>
         </el-row>
@@ -23,28 +32,35 @@
           <el-form-item label="创建日期">
             <el-col :span="11">
               <el-date-picker
-                v-model="formInline.keyword"
+                v-model="searchForm.createDateBegin"
                 type="date"
-                placeholder="Pick a date"
+                placeholder="选择开始日期"
                 style="width: 100%"
               />
             </el-col>
             <el-col :span="1" class="text-center">
-              <span class="text-gray-500">--</span>
+              <span class="text-gray-500">----</span>
             </el-col>
             <el-col :span="11">
               <el-date-picker
-                v-model="formInline.keyword"
+                v-model="searchForm.createDateEnd"
                 type="date"
-                placeholder="Pick a date"
+                placeholder="选择结束日期"
                 style="width: 100%"
               />
             </el-col>
           </el-form-item>
           <el-form-item label="状态">
-            <el-select v-model="formInline.keyword" placeholder="新创建">
-              <el-option label="新创建" value="全部" />
-              <el-option label="已分配" value="beijing" />
+            <el-select
+              v-model="searchForm.state"
+              placeholder="全部"
+              style="width: 120px"
+            >
+              <el-option label="全部" :value="0" />
+              <el-option label="新创建" :value="1" />
+              <el-option label="已分配" :value="2" />
+              <el-option label="已处理" :value="3" />
+              <el-option label="已归档" :value="4" />
             </el-select>
           </el-form-item>
         </el-row>
@@ -52,7 +68,7 @@
     </div>
     <div>
       <el-button type="primary" @click="handleSerch">查询</el-button>
-      <el-button color="#626aef" @click="handleSerch">帮助</el-button>
+      <el-button color="#626aef" @click="handleHelp">帮助</el-button>
     </div>
   </div>
   <div class="table">
@@ -608,6 +624,14 @@ export default defineComponent({
   setup() {
     const { proxy } = getCurrentInstance();
     const list = ref([]);
+    const searchForm = reactive({
+      customer: '',
+      overview: '',
+      serveType: 0,
+      createDateBegin: '',
+      createDateEnd: '',
+      state: 0
+    })
     const tableLabel = reactive([
       {
         prop: "number",
@@ -664,8 +688,9 @@ export default defineComponent({
       keyword: "",
     });
     const handleSerch = () => {
-      config.name = formInline.keyword;
-      getUserData(config);
+      console.log(searchForm)
+      // config.name = formInline.keyword;
+      // getUserData(searchForm);
     };
     // 控制模态框的显示隐藏
     const dialogVisible = ref(false);
@@ -802,6 +827,7 @@ export default defineComponent({
       config,
       changePage,
       formInline,
+      searchForm,
       handleSerch,
       dialogVisible,
       handleServiceVisible,
