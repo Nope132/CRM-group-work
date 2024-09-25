@@ -41,7 +41,7 @@
   </div>
   <el-dialog
     v-model="dialogVisible"
-    :title="action == 'add' ? '新增用户' : '编辑用户'"
+    :title="action == '新增用户'"
     width="60%"
     :before-close="handleClose"
   >
@@ -52,7 +52,7 @@
             label="编号"
             prop="number"
           >
-            <el-input v-model="formUser.number" placeholder="编号为系统自动生成" />
+            <el-input disabled v-model="formUser.number" placeholder="编号为系统自动生成" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -136,6 +136,7 @@
             :rules="[{ required: true, message: '创建人是必填项' }] "      
           >
             <el-input style="width: 300px" v-model="formUser.maker" placeholder="请输入创建人" />
+            
           </el-form-item>
         </el-col> 
         <el-col :span="12">
@@ -156,25 +157,217 @@
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item
+          <el-form-item 
             label="指派给"
-            prop="for"                       
+            prop="for"       
+            :rules="[{ required: true, message: '指派人是必选项' }] "
           >
-            <el-input v-model="formUser.for" placeholder="请输入联系人名称" />
+          <div class="flex flex-wrap gap-4 items-center">
+            <el-select disabled
+              v-model="value"
+              placeholder="选择指派人"
+              size="middle"
+              style="width: 240px"
+            >
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
+            </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item
             label="指派时间"
             prop="fortime"           
-          >
-            <el-input v-model.number="formUser.fortime" placeholder="请输入联系人电话" />
+          >            
+            <el-date-picker disabled
+              v-model="formUser.fortime"
+              type="date"
+              label="指派时间"
+              placeholder="请选择"
+              style="width: 100%"
+            />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row style="justify-content: flex-end">
         <el-form-item>
           <el-button type="primary" @click="handleCancel">取消</el-button>
+          <el-button type="primary" @click="onSubmit">保存</el-button>
+        </el-form-item>
+      </el-row>
+    </el-form>
+    <!-- <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="dialogVisible = false"
+          >确定</el-button
+        >
+      </span>
+    </template> -->
+  </el-dialog>
+  <el-dialog
+    v-model="dialogChange"
+    :title="action == '编辑用户'"
+    width="60%"
+    :before-close="handleClose"
+  >
+    <el-form :inline="true" :model="formUser" ref="userForm">
+      <el-row>
+        <el-col :span="12">
+          <el-form-item
+            label="编号"
+            prop="number"
+          >
+            <el-input disabled v-model="formUser.number" placeholder="编号为系统自动生成" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item
+            label="机会来源"
+            prop="from"            
+          > 
+            <el-input v-model.number="formUser.from"  />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item
+            label="客户名称"
+            prop="name"
+            :rules="[{ required: true, message: '客户名称是必填项' }]"
+          >
+            <el-input v-model="formUser.name" placeholder="请输入客户名称" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item
+            label="成功几率(%)"
+            prop="probability"            
+            :rules="[
+              { required: true, message: '成功几率是必填项且必须是数字' },
+              { type: 'number', message: '成功几率必须是数字' },
+            ]"
+          >
+            <el-input v-model.number="formUser.probability" placeholder="请输入成功几率" />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="15">
+          <el-form-item
+            label="概要"
+            prop="summary"
+            :rules="[{ required: true, message: '概要是必填项' }]"            
+          >
+            <el-input style="width: 300px" autosize v-model="formUser.summary" placeholder="请输入概要" />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item
+            label="联系人"
+            prop="person"                       
+          >
+            <el-input v-model="formUser.person" placeholder="请输入联系人名称" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item
+            label="联系人电话"
+            prop="phonenumber"           
+          >
+            <el-input v-model.number="formUser.phonenumber" placeholder="请输入联系人电话" />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item
+            label="机会描述"
+            prop="chance"    
+            :rules="[{ required: true, message: '机会描述是必填项' }] "      
+          >
+            <el-input style="width: 300px" autosize
+            type="textarea" v-model="formUser.chance" placeholder="请输入机会描述" />            
+          </el-form-item>
+        </el-col>    
+      </el-row>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item
+            label="创建人"
+            prop="maker"    
+            :rules="[{ required: true, message: '创建人是必填项' }] "      
+          >
+            <el-input style="width: 300px" v-model="formUser.maker" placeholder="请输入创建人" />
+            
+          </el-form-item>
+        </el-col> 
+        <el-col :span="12">
+          <el-form-item
+            label="创建时间"
+            prop="timemaker"                
+            :rules="[{ required: true, message: '创建时间是必选项' }] "      
+          >            
+            <el-date-picker
+              v-model="formUser.timemaker"
+              type="date"
+              label="创建时间"
+              placeholder="请选择"
+              style="width: 100%"
+            />
+          </el-form-item>
+        </el-col> 
+      </el-row>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item 
+            label="指派给"
+            prop="for"       
+            :rules="[{ required: true, message: '指派人是必选项' }] "                   
+          >
+          <div class="flex flex-wrap gap-4 items-center">
+            <el-select disabled
+              v-model="value"
+              placeholder="选择指派人"
+              size="middle"
+              style="width: 240px"
+            >
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
+            </div>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item
+            label="指派时间"
+            prop="fortime"           
+          >            
+            <el-date-picker disabled
+              v-model="formUser.fortime"
+              type="date"
+              label="指派时间"
+              placeholder="请选择"
+              style="width: 100%"
+            />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row style="justify-content: flex-end">
+        <el-form-item>
+          <el-button type="primary" @click="handleCancel2">取消</el-button>
           <el-button type="primary" @click="onSubmit">保存</el-button>
         </el-form-item>
       </el-row>
@@ -266,6 +459,7 @@ export default defineComponent({
     };
     // 控制模态框的显示隐藏
     const dialogVisible = ref(false);
+    const dialogChange = ref(false);
     const handleClose = (done) => {
       ElMessageBox.confirm("确定关闭吗?")
         .then(() => {
@@ -339,15 +533,17 @@ export default defineComponent({
       dialogVisible.value = false;
       proxy.$refs.userForm.resetFields();
     };
+    const handleCancel2 = () => {
+      dialogChange.value = false;
+      proxy.$refs.userForm.resetFields();
+    };
     // 区分编辑和新增
     const action = ref("add");
     // 编辑用户
     const handleEdit = (row) => {
       // 浅拷贝
-
       action.value = "edit";
-      dialogVisible.value = true;
-      row.sex == 1 ? (row.sex = "男") : (row.sex = "女");
+      dialogChange.value = true;     
       proxy.$nextTick(() => {
         Object.assign(formUser, row);
       });
@@ -376,7 +572,32 @@ export default defineComponent({
           // catch error
         });
     };
+    const value = ref('')
+    const options = [
+  {
+    value: 'Option1',
+    label: '111',
+  },
+  {
+    value: 'Option2',
+    label: 'Option2',
+  },
+  {
+    value: 'Option3',
+    label: 'Option3',
+  },
+  {
+    value: 'Option4',
+    label: 'Option4',
+  },
+  {
+    value: 'Option5',
+    label: 'Option5',
+  },
+]
     return {
+      options,
+      value,
       list,
       tableLabel,
       config,
@@ -384,15 +605,18 @@ export default defineComponent({
       formInline,
       handleSerch,
       dialogVisible,
+      dialogChange,
       handleClose,
       formUser,
       onSubmit,
       handleCancel,
+      handleCancel2,
       action,
       handleEdit,
       handleAdd,
       handleDelete,
     };
+    
   },
 });
 </script>
