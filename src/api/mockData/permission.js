@@ -31,11 +31,26 @@ export default {
               url: 'User/User'
             },
             {
-              path: '/sales',
-              name: 'sales',
+              //path: '/sales',
+              //name: 'sales',
               label: '营销管理',
               icon: 'Memo',
-              url: 'SalesManage/SalesManage'
+              children: [
+                {
+                  path: '/sales0',
+                  name: 'sales0',
+                  label: '销售机会管理',
+                  icon: 'Tickets',
+                  url: 'SalesManage/SalesManage'
+                },
+                {
+                  path: '/sales1',
+                  name: 'sales1',
+                  label: '客户开发计划',
+                  icon: 'Tickets',
+                  url: 'SalesManage/usersplan'
+                }
+              ]
             },
             {
               path: '/client',
