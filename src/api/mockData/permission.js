@@ -53,11 +53,24 @@ export default {
               ]
             },
             {
-              path: '/client',
-              name: 'client',
               label: '客户管理',
               icon: 'Avatar',
-              url: 'ClientManage/ClientManage'
+              children: [
+                {
+                  path: '/client information',
+                  name: 'client information',
+                  label: '客户信息管理',
+                  icon: 'Avatar',
+                  url: 'ClientManage/ClientInformationManage'
+                },
+                {
+                  path: '/client lose',
+                  name: 'client lose',
+                  label: '客户流失管理',
+                  icon: 'Avatar',
+                  url: 'ClientManage/ClientLoseManage'
+                }
+              ],
             },
             {
               path: '/service',
