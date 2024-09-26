@@ -24,121 +24,125 @@
     <!-- 表格部分 -->
     <el-table :data="list" style="width: 100%" height="500px">
       <el-table-column
-          v-for="item in tableLabel"
-          :key="item.prop"
-          :label="item.label"
-          :prop="item.prop"
-          :width="item.width ? item.width : 125"
-          :sortable="item.prop == 'number' ? true : false"
-          align="center"
+        v-for="item in tableLabel"
+        :key="item.prop"
+        :label="item.label"
+        :prop="item.prop"
+        :width="item.width ? item.width : 125"
+        :sortable="item.prop == 'number' ? true : false"
+        align="center"
       />
       <el-table-column
-          fixed="right"
-          align="center"
-          label="操作"
-          min-width="180"
+        fixed="right"
+        align="center"
+        label="操作"
+        min-width="180"
       >
-          <template #default="scope">
-            <el-button size="small" @click="handleEdit(scope.row)"
+        <template #default="scope">
+          <el-button size="small" @click="handleEdit(scope.row)"
             >编辑</el-button
-            >
-            <el-button type="danger" size="small" @click="handleDelete(scope.row)"
+          >
+          <el-button type="danger" size="small" @click="handleDelete(scope.row)"
             >删除</el-button
-            >
-            <el-button color="#6ec2fe" size="small" @click="handleServiceShow(scope.row)"
+          >
+          <el-button
+            color="#6ec2fe"
+            size="small"
+            @click="handleServiceShow(scope.row)"
             >查看</el-button
-            >
-          </template>
-
-
+          >
+        </template>
       </el-table-column>
     </el-table>
     <!-- 分页管理部分 -->
     <el-pagination
-        small
-        background
-        layout="prev, pager, next"
-        :total="config.total"
-        @current-change="changePage"
-        class="pager mt-4"
+      small
+      background
+      layout="prev, pager, next"
+      :total="config.total"
+      @current-change="changePage"
+      class="pager mt-4"
     />
   </div>
   <!-- 新增服务表单 -->
   <el-dialog
-      v-model="dialogVisible"
-      :title="action == 'add' ? '客户创建' : '编辑客户信息'"
-      width="35%"
-      :before-close="handleClose"
+    v-model="dialogVisible"
+    :title="action == 'add' ? '客户创建' : '编辑客户信息'"
+    width="35%"
+    :before-close="handleClose"
   >
     <el-form :inline="true" :model="formUser" ref="userForm">
       <el-row>
         <el-col :span="12">
           <el-form-item
-              label="编号"
-              prop="number"
-              :rules="[{ required: false, message: '' }]"
+            label="编号"
+            prop="number"
+            :rules="[{ required: false, message: '' }]"
           >
             <el-input v-model="formUser.name" placeholder="请输入编号" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item
-              label="客户"
-              prop="name"
-              :rules="[
-              { required: true, message: '客户是必填项' },
-            ]"
+            label="客户"
+            prop="name"
+            :rules="[{ required: true, message: '客户是必填项' }]"
           >
             <el-input v-model="formUser.name" placeholder="请输入客户名称" />
           </el-form-item>
         </el-col>
       </el-row>
 
-
       <el-row>
         <el-col :span="12">
           <el-form-item
-              label="客户经理"
-              prop="name"
-              :rules="[{ required: true, message: '客户经理是必填项' }]"
+            label="客户经理"
+            prop="name"
+            :rules="[{ required: true, message: '客户经理是必填项' }]"
           >
             <el-input v-model="formUser.name" placeholder="请输入姓名" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item
-              label="银行账号"
-              prop="number"
-              :rules="[
+            label="银行账号"
+            prop="number"
+            :rules="[
               { required: true, message: '银行账号是必填项' },
               { type: 'number', message: '银行账号必须是数字' },
             ]"
           >
-            <el-input v-model.number="formUser.age" placeholder="请输入银行账号" />
+            <el-input
+              v-model.number="formUser.age"
+              placeholder="请输入银行账号"
+            />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-form-item
-            label="地址"
-            prop="addr"
-            :rules="[{ required: true, message: '地址是必填项' }]"
+          label="地址"
+          prop="addr"
+          :rules="[{ required: true, message: '地址是必填项' }]"
         >
           <el-input
-              v-model="formUser.addr"
-              type="textarea"
-              placeholder="请输入地址"
+            v-model="formUser.addr"
+            type="textarea"
+            placeholder="请输入地址"
           />
         </el-form-item>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item
-              label="电话"
-              prop="number"
-              :rules="[{ required: true, message: '电话是必填项' }]"
+            label="电话"
+            prop="number"
+            :rules="[{ required: true, message: '电话是必填项' }]"
           >
-            <el-input v-model.number="formUser.age" placeholder="请输入电话号码" />
+            <el-input
+              v-model.number="formUser.age"
+              placeholder="请输入电话号码"
+            />
           </el-form-item>
         </el-col>
       </el-row>
@@ -160,80 +164,83 @@
   </el-dialog>
   <!-- 编辑客户信息表单 -->
   <el-dialog
-      v-model="handleServiceVisible"
-      title="编辑客户信息"
-      width="35%"
-      :before-close="handleCloseService"
+    v-model="handleServiceVisible"
+    title="编辑客户信息"
+    width="35%"
+    :before-close="handleCloseService"
   >
     <el-form :inline="true" :model="formUser" ref="userForm">
       <el-row>
         <el-col :span="12">
           <el-form-item
-              label="编号"
-              prop="number"
-              :rules="[{ required: false, message: '' }]"
+            label="编号"
+            prop="number"
+            :rules="[{ required: false, message: '' }]"
           >
             <el-input v-model="formUser.name" placeholder="请输入编号" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item
-              label="客户"
-              prop="name"
-              :rules="[
-              { required: true, message: '客户是必填项' },
-            ]"
+            label="客户"
+            prop="name"
+            :rules="[{ required: true, message: '客户是必填项' }]"
           >
             <el-input v-model="formUser.name" placeholder="请输入客户名称" />
           </el-form-item>
         </el-col>
       </el-row>
 
-
       <el-row>
         <el-col :span="12">
           <el-form-item
-              label="客户经理"
-              prop="name"
-              :rules="[{ required: true, message: '客户经理是必填项' }]"
+            label="客户经理"
+            prop="name"
+            :rules="[{ required: true, message: '客户经理是必填项' }]"
           >
             <el-input v-model="formUser.name" placeholder="请输入姓名" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item
-              label="银行账号"
-              prop="number"
-              :rules="[
+            label="银行账号"
+            prop="number"
+            :rules="[
               { required: true, message: '银行账号是必填项' },
               { type: 'number', message: '银行账号必须是数字' },
             ]"
           >
-            <el-input v-model.number="formUser.age" placeholder="请输入银行账号" />
+            <el-input
+              v-model.number="formUser.age"
+              placeholder="请输入银行账号"
+            />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-form-item
-            label="地址"
-            prop="addr"
-            :rules="[{ required: true, message: '地址是必填项' }]"
+          label="地址"
+          prop="addr"
+          :rules="[{ required: true, message: '地址是必填项' }]"
         >
           <el-input
-              v-model="formUser.addr"
-              type="textarea"
-              placeholder="请输入地址"
+            v-model="formUser.addr"
+            type="textarea"
+            placeholder="请输入地址"
           />
         </el-form-item>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item
-              label="电话"
-              prop="number"
-              :rules="[{ required: true, message: '电话是必填项' }]"
+            label="电话"
+            prop="number"
+            :rules="[{ required: true, message: '电话是必填项' }]"
           >
-            <el-input v-model.number="formUser.age" placeholder="请输入电话号码" />
+            <el-input
+              v-model.number="formUser.age"
+              placeholder="请输入电话号码"
+            />
           </el-form-item>
         </el-col>
       </el-row>
@@ -253,15 +260,17 @@
       </span>
     </template> -->
   </el-dialog>
-<!--查看客户信息-->
+  <!--查看客户信息-->
   <el-dialog
-      v-model="serviceShowVisible"
-      title="客户信息"
-      width="80%"
-      :before-close="handleCloseServiceFeedBack"
+    v-model="serviceShowVisible"
+    title="客户信息"
+    width="80%"
+    :before-close="handleCloseServiceShow"
   >
     <div>
-      <el-button type="danger" @click="handleServiceConnectShow(row)">联系人</el-button>
+      <el-button type="danger" @click="handleServiceConnectShow(row)"
+        >联系人</el-button
+      >
       <el-button type="primary" @click="handleAdd">历史订单</el-button>
       <el-button color="#626aef" @click="handleAdd">交往记录</el-button>
     </div>
@@ -269,66 +278,35 @@
       <el-row>
         <el-col :span="12">
           <el-form-item
-              label="编号"
-              prop="name"
-              :rules="[{ required: false, message: '' }]"
+            label="编号"
+            prop="name"
+            :rules="[{ required: false, message: '' }]"
           >
-
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item
-              label="客户"
-              prop="sex"
-              :rules="[{ required: true, message: '性别是必选项' }]"
+            label="客户"
+            prop="sex"
+            :rules="[{ required: true, message: '性别是必选项' }]"
           >
-
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-dialog
-          v-model="serviceConnectShowVisible"
-          title="联系人信息"
-          width="80%"
-          :before-close="handleCloseServiceShow"
-      >
-      <el-table :data="list" style="width: 100%" height="500px">
-          <el-table-column
-              v-for="item in tableConnect"
-              :key="item.prop"
-              :label="item.label"
-              :prop="item.prop"
-              :width="item.width ? item.width : 125"
-              :sortable="item.prop == 'number' ? true : false"
-              align="center"
-          />
-          <el-table-column
-              fixed="right"
-              align="center"
-              label="操作"
-              min-width="180"
-          >
-          </el-table-column>
-        </el-table>
-      </el-dialog>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="客户经理" prop="age">                 </el-form-item>
-        </el-col>
-        <el-form-item label="地址" prop="addr">                   </el-form-item>
-      </el-row>
-      <el-row>
-
-
-        <el-col :span="12">
-          <el-form-item label="电话" prop="birth">
-
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="银行账号" prop="addr">  </el-form-item>
+          <el-form-item label="客户经理" prop="age"> </el-form-item>
+        </el-col>
+        <el-form-item label="地址" prop="addr"> </el-form-item>
+      </el-row>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="电话" prop="birth"> </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="银行账号" prop="addr"> </el-form-item>
         </el-col>
       </el-row>
       <el-row style="justify-content: flex-end">
@@ -339,7 +317,32 @@
       </el-row>
     </el-form>
   </el-dialog>
-
+  <!-- 联系人信息 -->
+  <el-dialog
+    v-model="serviceConnectShowVisible"
+    title="联系人信息"
+    width="80%"
+    :before-close="handleCloseConnectShow"
+  >
+    <el-table :data="list" style="width: 100%" height="500px">
+      <el-table-column
+        v-for="item in tableConnect"
+        :key="item.prop"
+        :label="item.label"
+        :prop="item.prop"
+        :width="item.width ? item.width : 125"
+        :sortable="item.prop == 'number' ? true : false"
+        align="center"
+      />
+      <el-table-column
+        fixed="right"
+        align="center"
+        label="操作"
+        min-width="180"
+      >
+      </el-table-column>
+    </el-table>
+  </el-dialog>
 </template>
 
 
@@ -425,7 +428,7 @@ export default defineComponent({
     });
     const getUserData = async (config) => {
       let res = await proxy.$api.getUserData(config);
-      console.log(res);
+      // console.log(res);
       config.total = res.count;
       list.value = res.list.map((item) => {
         item.sexLabel = item.sex === 0 ? "女" : "男";
@@ -449,17 +452,17 @@ export default defineComponent({
     const dialogVisible = ref(false);
     const handleServiceVisible = ref(false)
     const serviceFeedbackVisible = ref(false)
-    const serviceShowVisible = ref(false)
-    const serviceConnectShowVisible = ref(false)
+    const serviceShowVisible = ref(false) // 查看信息窗口
+    const serviceConnectShowVisible = ref(false) // 联系人窗口
     const handleClose = (done) => {
       ElMessageBox.confirm("确定关闭吗?")
-          .then(() => {
-            proxy.$refs.userForm.resetFields();
-            done();
-          })
-          .catch(() => {
-            // catch error
-          });
+        .then(() => {
+          proxy.$refs.userForm.resetFields();
+          done();
+        })
+        .catch(() => {
+          // catch error
+        });
     };
     const handleCloseService = () => {
       handleServiceVisible.value = false
@@ -467,10 +470,12 @@ export default defineComponent({
     const handleCloseServiceFeedback = () => {
       serviceFeedbackVisible.value = false
     }
-    const handleCloseServiceShow = () => {
+    const handleCloseServiceShow = () => { // 关闭查看窗口
       serviceShowVisible.value = false
     }
-
+    const handleCloseConnectShow = () => {  // 关闭联系人窗口
+      serviceConnectShowVisible.value = false;
+    }
     // 添加用户的form数据
     const formUser = reactive({
       name: "", // 添加用户的 用户名
@@ -567,21 +572,21 @@ export default defineComponent({
     // 删除用户
     const handleDelete = (row) => {
       ElMessageBox.confirm("你确定删除吗?")
-          .then(async () => {
-            await proxy.$api.deleteUser({
-              id: row.id,
-            });
-
-            ElMessage({
-              showClose: true,
-              message: "删除成功",
-              type: "success",
-            });
-            getUserData(config);
-          })
-          .catch(() => {
-            // catch error
+        .then(async () => {
+          await proxy.$api.deleteUser({
+            id: row.id,
           });
+
+          ElMessage({
+            showClose: true,
+            message: "删除成功",
+            type: "success",
+          });
+          getUserData(config);
+        })
+        .catch(() => {
+          // catch error
+        });
     };
     const handleShow = () => {
       action.value = "add";
@@ -609,6 +614,7 @@ export default defineComponent({
       handleCloseService,
       handleCloseServiceFeedback,
       handleCloseServiceShow,
+      handleCloseConnectShow,
       formUser,
       onSubmit,
       handleCancel,
