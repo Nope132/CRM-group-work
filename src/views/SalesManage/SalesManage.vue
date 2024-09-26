@@ -41,7 +41,7 @@
   </div>
   <el-dialog
     v-model="dialogVisible"
-    :title="action == '新增用户'"
+    title="新增销售机会"
     width="60%"
     :before-close="handleClose"
   >
@@ -212,7 +212,7 @@
   </el-dialog>
   <el-dialog
     v-model="dialogChange"
-    :title="action == '编辑用户'"
+    title='编辑销售机会'
     width="60%"
     :before-close="handleClose"
   >
