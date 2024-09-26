@@ -1,6 +1,5 @@
 <template>
   <div class="user-header">
-    <el-button type="primary" @click="handleAdd">+新增</el-button>
     <el-form :inline="true" :model="formInline">
       <el-form-item label="请输入">
         <el-input v-model="formInline.keyword" placeholder="请输入客户名称" />
@@ -16,6 +15,7 @@
         :width="item.width ? item.width : 200" />
       <el-table-column fixed="right" label="操作" min-width="180">
         <template #default="scope">
+          <el-button size="small" type="primary" @click="handleAdd">+新增</el-button>
           <el-button size="small" @click="handleEdit(scope.row)">编辑</el-button>
           <el-button type="danger" size="small" @click="handleDelete(scope.row)">删除</el-button>
         </template>
@@ -81,7 +81,6 @@
         <el-col :span="12">
           <el-form-item label="创建人" prop="maker">
             <el-input disabled style="width: 300px" v-model="formUser.maker" placeholder="请输入创建人" />
-
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -109,17 +108,17 @@
         </el-col>
       </el-row>
       <el-table :data="tableData" style="width: 100%">
-        <el-table-column fixed prop="date" label="Date" width="150">
+        <el-table-column fixed prop="date" label="日期" width="150">
           <template #default="scope">
-            <el-input v-model="scope.row.date" placeholder="输入日期"></el-input>
+            <el-input disabled v-model="scope.row.date" placeholder="输入日期"></el-input>
           </template>
         </el-table-column>
-        <el-table-column prop="name" label="Name" width="120">
+        <el-table-column prop="planname" label="计划项" width="300">
           <template #default="scope">
-            <el-input v-model="scope.row.name" placeholder="输入姓名"></el-input>
+            <el-input v-model="scope.row.name" placeholder="输入计划项"></el-input>
           </template>
         </el-table-column>
-        <el-table-column fixed="right" label="Operations" min-width="120">
+        <el-table-column fixed="right" label="操作" min-width="120">
           <template #default="scope">
             <el-button link type="primary" size="middle" @click="inlineSubmit(scope.row)">保存</el-button>
             <el-button link type="danger" size="middle" @click="inlineDelete(scope.row)">删除</el-button>
@@ -127,14 +126,14 @@
         </el-table-column>
       </el-table>
       <el-row>
-      <el-col :span="12">
+        <el-col :span="12">
           <el-form-item label="日期" prop="date">
             <el-input disabled v-model="formUser.number" placeholder="日期为系统自动生成" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="计划项" prop="plan">
-            <el-input v-model.number="formUser.from" />
+          <el-form-item label="计划项" prop="planname">
+            <el-input v-model.number="formUser.from" placeholder="请输入计划项" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -143,9 +142,6 @@
           <el-button type="primary" @click="handleCancel">取消</el-button>
           <el-button type="primary" @click="onSubmit">保存</el-button>
         </el-form-item>
-      </el-row>
-      <el-row>
-        
       </el-row>
     </el-form>
     <!-- <template #footer>
@@ -350,18 +346,22 @@ export default defineComponent({
     };
     // 添加用户的form数据
     const formUser = reactive({
-      name: "", // 添加用户的 用户名
-      number: "",
-      from: "",
-      summary: "",
-      person: "",
-      probability: "",
-      phonenumber: "",
-      chance: "",
-      maker: "",
-      timemaker: "",
-      for: "",
-      fortime: ""
+      name: "", // 客户名称
+      number: "", // 编号
+      from: "", // 机会来源
+      summary: "", //概要
+      person: "", //联系人
+      probability: "", //成功几率
+      phonenumber: "", //联系人电话
+      chance: "", //机会描述
+      maker: "", //创建人
+      timemaker: "", //创建时间
+      for: "", //指派给
+      fortime: "", //指派时间
+      date: "", //日期
+      planname: "", //计划项
+      right: "", //操作
+      
     });
     const timeFormat = (time) => {
       var time = new Date(time);
@@ -476,7 +476,7 @@ export default defineComponent({
     const tableData = [
       {
         date: '2016-05-03',
-        name: 'Tom',
+        plan: '下周进行操作',
       },
 
     ];
