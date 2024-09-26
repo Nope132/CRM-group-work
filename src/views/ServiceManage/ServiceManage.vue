@@ -139,7 +139,7 @@
   </div>
   <!-- 新增服务表单 -->
   <el-dialog
-    v-model="dialogVisible"
+    v-model="dialogState.dialogVisible"
     :title="action == 'add' ? '服务创建' : '编辑用户'"
     width="35%"
     :before-close="handleClose"
@@ -262,7 +262,7 @@
   </el-dialog>
   <!-- 服务处理表单 -->
   <el-dialog
-    v-model="handleServiceVisible"
+    v-model="dialogState.handleServiceVisible"
     title="服务处理"
     width="35%"
     :before-close="handleCloseService"
@@ -379,7 +379,7 @@
   </el-dialog>
   <!-- 服务反馈表单 -->
   <el-dialog
-    v-model="serviceFeedbackVisible"
+    v-model="dialogState.serviceFeedbackVisible"
     title="服务反馈"
     width="35%"
     :before-close="handleCloseServiceFeedBack"
@@ -490,14 +490,6 @@
         </el-form-item>
       </el-row>
     </el-form>
-    <!-- <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="dialogVisible = false"
-          >确定</el-button
-        >
-      </span>
-    </template> -->
   </el-dialog>
   <!-- 服务展示表单 -->
   <el-dialog
@@ -693,10 +685,12 @@ export default defineComponent({
       // getUserData(searchForm);
     };
     // 控制模态框的显示隐藏
-    const dialogVisible = ref(false);
-    const handleServiceVisible = ref(false)
-    const serviceFeedbackVisible = ref(false)
-    const serviceShowVisible = ref(false)
+    const dialogState = reactive({
+      dialogVisible: false,
+      handleServiceVisible: false,
+      serviceFeedbackVisible: false,
+      serviceShowVisible: false
+    })
     const handleClose = (done) => {
       ElMessageBox.confirm("确定关闭吗?")
         .then(() => {
@@ -708,10 +702,10 @@ export default defineComponent({
         });
     };
     const handleCloseService = () => {
-      handleServiceVisible.value = false
+      dialogState.handleServiceVisible = false
     }
     const handleCloseServiceFeedback = () => {
-      serviceFeedbackVisible.value = false
+      dialogState.serviceFeedbackVisible = false
     }
     const handleCloseServiceShow = () => {
       serviceShowVisible.value = false
@@ -743,7 +737,7 @@ export default defineComponent({
             let res = await proxy.$api.addUser(formUser);
             if (res) {
               // console.log(proxy.$refs);
-              dialogVisible.value = false;
+              dialogState.dialogVisible = false;
               proxy.$refs.userForm.resetFields();
               getUserData(config);
             }
@@ -753,7 +747,7 @@ export default defineComponent({
             let res = await proxy.$api.editUser(formUser);
             if (res) {
               // console.log(proxy.$refs);
-              dialogVisible.value = false;
+              dialogState.dialogVisible = false;
               proxy.$refs.userForm.resetFields();
               getUserData(config);
             }
@@ -769,16 +763,16 @@ export default defineComponent({
     };
     // 取消
     const handleCancel = () => {
-      dialogVisible.value = false;
+      dialogState.dialogVisible = false;
       proxy.$refs.userForm.resetFields();
     };
     // 进行服务的处理
     const handleService = () => {
-      handleServiceVisible.value = true;
+      dialogState.handleServiceVisible = true;
     }
     // 进行服务的反馈
     const handleServiceFeedback = () => {
-      serviceFeedbackVisible.value = true;
+      dialogState.serviceFeedbackVisible = true;
     }
     // 进行服务的展示
     const handleServiceShow = () => {
@@ -791,7 +785,7 @@ export default defineComponent({
       // 浅拷贝
 
       action.value = "edit";
-      dialogVisible.value = true;
+      dialogState.dialogVisible = true;
       row.sex == 1 ? (row.sex = "男") : (row.sex = "女");
       proxy.$nextTick(() => {
         Object.assign(formUser, row);
@@ -800,7 +794,7 @@ export default defineComponent({
     // 新增用户
     const handleAdd = () => {
       action.value = "add";
-      dialogVisible.value = true;
+      dialogState.dialogVisible = true;
     };
     // 删除用户
     const handleDelete = (row) => {
@@ -829,10 +823,7 @@ export default defineComponent({
       formInline,
       searchForm,
       handleSerch,
-      dialogVisible,
-      handleServiceVisible,
-      serviceFeedbackVisible,
-      serviceShowVisible,
+      dialogState,
       handleClose,
       handleService,
       handleServiceShow,
