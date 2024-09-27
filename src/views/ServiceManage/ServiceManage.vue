@@ -493,7 +493,7 @@
   </el-dialog>
   <!-- 服务展示表单 -->
   <el-dialog
-    v-model="serviceShowVisible"
+    v-model="dialogState.serviceShowVisible"
     title="服务反馈"
     width="35%"
     :before-close="handleCloseServiceFeedBack"
@@ -611,48 +611,15 @@ import {
   ref,
   reactive,
 } from "vue";
-
+import useServiceTable from "../../hooks/useServiceTable";
 export default defineComponent({
+  components: {
+
+  },
   setup() {
     const { proxy } = getCurrentInstance();
     const list = ref([]);
-    const searchForm = reactive({
-      customer: '',
-      overview: '',
-      serveType: 0,
-      createDateBegin: '',
-      createDateEnd: '',
-      state: 0
-    })
-    const tableLabel = reactive([
-      {
-        prop: "number",
-        label: "编号"
-      },
-      {
-        prop: "addr",
-        label: "客户",
-        width: '240px'
-      },
-      {
-        prop: "age",
-        label: "概要",
-      },
-      {
-        prop: "sexLabel",
-        label: "服务类型",
-      },
-      {
-        prop: "name",
-        label: "创建人",
-        width: 200,
-      },
-      {
-        prop: "birth",
-        label: "创建日期",
-        width: 320,
-      },
-    ]);
+    const { tableLabel, serviceForm, searchForm } = useServiceTable()
     onMounted(() => {
       getUserData(config);
     });
@@ -708,7 +675,7 @@ export default defineComponent({
       dialogState.serviceFeedbackVisible = false
     }
     const handleCloseServiceShow = () => {
-      serviceShowVisible.value = false
+      dialogState.serviceShowVisible = false
     }
     // 添加用户的form数据
     const formUser = reactive({
@@ -776,7 +743,7 @@ export default defineComponent({
     }
     // 进行服务的展示
     const handleServiceShow = () => {
-      serviceShowVisible.value = true;
+      dialogState.serviceShowVisible = true;
     }
     // 区分编辑和新增
     const action = ref("add");
@@ -818,6 +785,7 @@ export default defineComponent({
     return {
       list,
       tableLabel,
+      serviceForm,
       config,
       changePage,
       formInline,
