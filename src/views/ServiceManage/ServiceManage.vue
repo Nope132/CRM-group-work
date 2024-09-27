@@ -118,10 +118,19 @@
           <el-button
             type="warning"
             size="small"
-            @click="handleServiceFeedback()"
+            @click="
+              dialogState.serviceShowVisible = true;
+              showFeedBackSwitch = 1;
+            "
             >反馈</el-button
           >
-          <el-button color="#6ec2fe" size="small" @click="handleServiceShow()"
+          <el-button
+            color="#6ec2fe"
+            size="small"
+            @click="
+              dialogState.serviceShowVisible = true;
+              showFeedBackSwitch = 2;
+            "
             >查看</el-button
           >
         </template>
@@ -377,211 +386,136 @@
       </span>
     </template> -->
   </el-dialog>
-  <!-- 服务反馈表单 -->
-  <el-dialog
-    v-model="dialogState.serviceFeedbackVisible"
-    title="服务反馈"
-    width="35%"
-    :before-close="handleCloseServiceFeedBack"
-  >
-    <el-form :inline="true" :model="formUser" ref="userForm">
-      <el-row>
-        <el-col :span="12">
-          <el-form-item
-            label="编号"
-            prop="name"
-            :rules="[{ required: false, message: '' }]"
-          >
-            456
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item
-            label="服务类型"
-            prop="sex"
-            :rules="[{ required: true, message: '性别是必选项' }]"
-          >
-            咨询
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="概要" prop="age">
-            询问收音机订单运费承担方式
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="客户" prop="name"> 太阳药业 </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="状态" prop="age"> 已分配 </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-form-item label="服务请求" prop="addr">
-          收音机订单运费如何承担？
-        </el-form-item>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="创建人" prop="addr"> 小明 </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="创建时间" prop="birth">
-            2007年12月02日 15时26分58秒
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="分配给" prop="addr"> 旺财 </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="分配时间" prop="birth">
-            2007年12月02日 15时26分58秒
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-form-item label="服务处理" prop="addr">
-          回电话给刘经理： 根据相关制度，7元/吨*公里内由我们负责，之外由客户负责
-        </el-form-item>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="处理人" prop="addr"> 郭晓梅 </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="处理时间" prop="birth">
-            2007年12月02日 15时26分58秒
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item
-            label="处理结果"
-            prop="addr"
-            :rules="[{ required: true, message: '处理结果是必填项' }]"
-          >
-            <el-input placeholder="请输入处理结果" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item
-            label="满意度"
-            prop="birth"
-            :rules="[{ required: true, message: '满意度是必填项' }]"
-          >
-            <el-select v-model="formInline.keyword" placeholder="请选择...">
-              <el-option label="☆☆☆☆☆" value="全部" />
-              <el-option label="☆☆☆☆" value="beijing" />
-            </el-select>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row style="justify-content: flex-end">
-        <el-form-item>
-          <el-button type="primary" @click="handleCancel">取消</el-button>
-          <el-button type="primary" @click="onSubmit">确定</el-button>
-        </el-form-item>
-      </el-row>
-    </el-form>
-  </el-dialog>
-  <!-- 服务展示表单 -->
+  <!-- 服务反馈 查看 表单 -->
   <el-dialog
     v-model="dialogState.serviceShowVisible"
     title="服务反馈"
     width="35%"
-    :before-close="handleCloseServiceFeedBack"
+    :before-close="
+      () => {
+        dialogState.serviceShowVisible = false;
+      }
+    "
   >
-    <el-form :inline="true" :model="formUser" ref="userForm">
+    <el-form :inline="true" :model="serviceForm" ref="userForm">
       <el-row>
         <el-col :span="12">
-          <el-form-item
-            label="编号"
-            prop="name"
-            :rules="[{ required: false, message: '' }]"
-          >
-            456
+          <el-form-item label="编号" prop="id">
+            {{ serviceForm.id }}
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item
-            label="服务类型"
-            prop="sex"
-            :rules="[{ required: true, message: '性别是必选项' }]"
-          >
-            咨询
-          </el-form-item>
+          <el-form-item label="服务类型" prop="serveType">{{
+            serviceForm.serveType
+          }}</el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="概要" prop="age">
-            询问收音机订单运费承担方式
+          <el-form-item label="概要" prop="overview">
+            {{ serviceForm.overview }}
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="客户" prop="name"> 太阳药业 </el-form-item>
+          <el-form-item label="客户" prop="customer">
+            {{ serviceForm.customer }}
+          </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="状态" prop="age"> 已分配 </el-form-item>
+          <el-form-item label="状态" prop="state">
+            {{ serviceForm.state }}
+          </el-form-item>
         </el-col>
       </el-row>
       <el-row>
-        <el-form-item label="服务请求" prop="addr">
-          收音机订单运费如何承担？
+        <el-form-item label="服务请求" prop="serviceRequest">
+          {{ serviceForm.serveRequest }}
         </el-form-item>
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="创建人" prop="addr"> 小明 </el-form-item>
+          <el-form-item label="创建人" prop="createPeople">
+            {{ serviceForm.createPeople }}
+          </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="创建时间" prop="birth">
-            2007年12月02日 15时26分58秒
+          <el-form-item label="创建时间" prop="createDate">
+            {{ serviceForm.createDate }}
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="分配给" prop="addr"> 旺财 </el-form-item>
+          <el-form-item label="分配给" prop="assigner">
+            {{ serviceForm.assigner }}
+          </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="分配时间" prop="birth">
-            2007年12月02日 15时26分58秒
+          <el-form-item label="分配时间" prop="assignTime">
+            {{ serviceForm.assignTime }}
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
-        <el-form-item label="服务处理" prop="addr">
-          回电话给刘经理： 根据相关制度，7元/吨*公里内由我们负责，之外由客户负责
+        <el-form-item label="服务处理" prop="serviceProcess">
+          {{ serviceForm.serviceProce }}
         </el-form-item>
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="处理人" prop="addr"> 郭晓梅 </el-form-item>
+          <el-form-item label="处理人" prop="serviceProcePeople">
+            {{ serviceForm.serviceProcePeople }}
+          </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="处理时间" prop="birth">
-            2007年12月02日 15时26分58秒
+          <el-form-item label="处理时间" prop="serviceProceTime">
+            {{ serviceForm.serviceProceTime }}
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="处理结果" prop="addr">
-            处理结果的内容
-          </el-form-item>
+          <span v-if="showFeedBackSwitch == 1">
+            <el-form-item
+              label="处理结果"
+              prop="serviceProceResult"
+              :rules="[{ required: true, message: '处理结果是必填项' }]"
+            >
+              <el-input
+                v-model="serviceForm.serviceProceResult"
+                placeholder="请输入处理结果"
+              />
+            </el-form-item>
+          </span>
+          <span v-if="showFeedBackSwitch == 2">
+            <el-form-item label="处理结果" prop="serviceProceResult">
+              {{ serviceForm.serviceProceResult }}
+            </el-form-item>
+          </span>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="满意度" prop="birth"> ☆☆☆☆☆ </el-form-item>
+          <span v-if="showFeedBackSwitch == 1">
+            <el-form-item
+              label="满意度"
+              prop="satisfaction"
+              :rules="[{ required: true, message: '满意度是必填项' }]"
+            >
+              <el-select
+                v-model="serviceForm.satisfaction"
+                placeholder="请选择..."
+              >
+                <el-option label="☆☆☆☆☆" value="全部" />
+                <el-option label="☆☆☆☆" value="beijing" />
+              </el-select>
+            </el-form-item>
+          </span>
+          <span v-if="showFeedBackSwitch == 2">
+            <el-form-item label="满意度" prop="satisfaction">
+              {{ serviceForm.satisfaction }}
+            </el-form-item>
+          </span>
         </el-col>
       </el-row>
       <el-row style="justify-content: flex-end">
@@ -591,14 +525,6 @@
         </el-form-item>
       </el-row>
     </el-form>
-    <!-- <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="dialogVisible = false"
-          >确定</el-button
-        >
-      </span>
-    </template> -->
   </el-dialog>
 </template>
 
@@ -655,9 +581,9 @@ export default defineComponent({
     const dialogState = reactive({
       dialogVisible: false,
       handleServiceVisible: false,
-      serviceFeedbackVisible: false,
       serviceShowVisible: false
     })
+    const showFeedBackSwitch = ref(0); // 0 关闭 1 反馈 2 查看 
     const handleClose = (done) => {
       ElMessageBox.confirm("确定关闭吗?")
         .then(() => {
@@ -670,12 +596,6 @@ export default defineComponent({
     };
     const handleCloseService = () => {
       dialogState.handleServiceVisible = false
-    }
-    const handleCloseServiceFeedback = () => {
-      dialogState.serviceFeedbackVisible = false
-    }
-    const handleCloseServiceShow = () => {
-      dialogState.serviceShowVisible = false
     }
     // 添加用户的form数据
     const formUser = reactive({
@@ -737,14 +657,6 @@ export default defineComponent({
     const handleService = () => {
       dialogState.handleServiceVisible = true;
     }
-    // 进行服务的反馈
-    const handleServiceFeedback = () => {
-      dialogState.serviceFeedbackVisible = true;
-    }
-    // 进行服务的展示
-    const handleServiceShow = () => {
-      dialogState.serviceShowVisible = true;
-    }
     // 区分编辑和新增
     const action = ref("add");
     // 编辑用户
@@ -792,13 +704,10 @@ export default defineComponent({
       searchForm,
       handleSerch,
       dialogState,
+      showFeedBackSwitch,
       handleClose,
       handleService,
-      handleServiceShow,
-      handleServiceFeedback,
       handleCloseService,
-      handleCloseServiceFeedback,
-      handleCloseServiceShow,
       formUser,
       onSubmit,
       handleCancel,
