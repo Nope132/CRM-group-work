@@ -17,13 +17,6 @@ export default {
               url: 'home/Home'
             },
             {
-              path: '/mall',
-              name: 'mall',
-              label: '商品管理',
-              icon: 'video-play',
-              url: 'mall/index'
-            },
-            {
               path: '/user',
               name: 'user',
               label: '用户管理',
@@ -80,22 +73,63 @@ export default {
               url: 'ServiceManage/ServiceManage'
             },
             {
-              label: '其他',
-              icon: 'location',
+              label: '分析报表',
+              icon: 'analyze',
               children: [
                 {
-                  path: '/page1',
-                  name: 'page1',
-                  label: '页面1',
-                  icon: 'setting',
-                  url: 'Page1'
+                  path: '/contri',
+                  name: 'contri',
+                  label: '客户贡献分析',
+                  icon: 'contri',
+                  url: 'AnalysisReport/ContriAnalysis'
                 },
                 {
-                  path: '/page2',
-                  name: 'page2',
-                  label: '页面2',
-                  icon: 'setting',
-                  url: 'Page2'
+                  path: '/consti',
+                  name: 'consti',
+                  label: '客户构成分析',
+                  icon: 'consti',
+                  url: 'AnalysisReport/ConstiAnalysis'
+                },
+                {
+                  path: '/serve',
+                  name: 'serve',
+                  label: '客户服务分析',
+                  icon: 'serve',
+                  url: 'AnalysisReport/ServiceAnalysis'
+                },
+                {
+                  path: '/drain',
+                  name: 'drain',
+                  label: '客户流失分析',
+                  icon: 'drain',
+                  url: 'AnalysisReport/DrainAnalysis'
+                }
+              ]
+            },
+            {
+              label: '基础数据',
+              icon: 'basic',
+              children: [
+                {
+                  path: '/dict',
+                  name: 'dict',
+                  label: '数据字典管理',
+                  icon: 'dict',
+                  url: 'BasicData/DictManage'
+                },
+                {
+                  path: '/product',
+                  name: 'product',
+                  label: '查询产品数据',
+                  icon: 'query',
+                  url: 'BasicData/ProductQuery'
+                },
+                {
+                  path: '/stock',
+                  name: 'stock',
+                  label: '查询库存',
+                  icon: 'stock',
+                  url: 'BasicData/StockQuery'
                 }
               ]
             }
