@@ -74,61 +74,61 @@ export default {
             },
             {
               label: '分析报表',
-              icon: 'analyze',
+              icon: 'DataAnalysis',
               children: [
                 {
                   path: '/contri',
                   name: 'contri',
                   label: '客户贡献分析',
-                  icon: 'contri',
+                  icon: 'DataAnalysis',
                   url: 'AnalysisReport/ContriAnalysis'
                 },
                 {
                   path: '/consti',
                   name: 'consti',
                   label: '客户构成分析',
-                  icon: 'consti',
+                  icon: 'DataAnalysis',
                   url: 'AnalysisReport/ConstiAnalysis'
                 },
                 {
                   path: '/serve',
                   name: 'serve',
                   label: '客户服务分析',
-                  icon: 'serve',
+                  icon: 'DataAnalysis',
                   url: 'AnalysisReport/ServiceAnalysis'
                 },
                 {
                   path: '/drain',
                   name: 'drain',
                   label: '客户流失分析',
-                  icon: 'drain',
+                  icon: 'DataAnalysis',
                   url: 'AnalysisReport/DrainAnalysis'
                 }
               ]
             },
             {
               label: '基础数据',
-              icon: 'basic',
+              icon: 'Management',
               children: [
                 {
                   path: '/dict',
                   name: 'dict',
                   label: '数据字典管理',
-                  icon: 'dict',
+                  icon: 'Management',
                   url: 'BasicData/DictManage'
                 },
                 {
                   path: '/product',
                   name: 'product',
                   label: '查询产品数据',
-                  icon: 'query',
+                  icon: 'Management',
                   url: 'BasicData/ProductQuery'
                 },
                 {
                   path: '/stock',
                   name: 'stock',
                   label: '查询库存',
-                  icon: 'stock',
+                  icon: 'Management',
                   url: 'BasicData/StockQuery'
                 }
               ]
